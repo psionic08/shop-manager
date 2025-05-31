@@ -17,7 +17,7 @@ export default function SignupPage() {
             try {
                 const response = await axios.post("/api/users/signup", {username,password});
                 if(response.data.success){
-                    router.push("/")
+                    router.push("/login")
                 }
                 else{
                     alert(response.data.error)
@@ -35,7 +35,7 @@ export default function SignupPage() {
     return (
     <div className="w-full flex justify-center">
         <div className="flex flex-col w-100 items-center pt-12 gap-4">
-            <TextWithLabel containerStyle="flex justify-between w-full gap-3" labelText="User Name" inputValue={username} inputType="text" inputStyle="border-2 border-black rounded-sm" inputSetter={setUsername}></TextWithLabel>
+            <TextWithLabel containerStyle="flex justify-between w-full gap-3" labelText="Username" inputValue={username} inputType="text" inputStyle="border-2 border-black rounded-sm" inputSetter={setUsername}></TextWithLabel>
             <TextWithLabel containerStyle="flex justify-between w-full gap-3" labelText="Password" inputValue={password} inputType="password" inputStyle="border-2 border-black rounded-sm" inputSetter={setPassword}></TextWithLabel>
             <TextWithLabel containerStyle="flex justify-between w-full gap-3" labelText="Confirm Password" inputValue={cnfPassword} inputType="password" inputStyle="border-2 border-black rounded-sm" inputSetter={setCnfPassword}></TextWithLabel>
             <button className="bg-blue-500 p-1 text-white rounded-sm" onClick={onSignup}>Sign Up</button>
