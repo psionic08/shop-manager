@@ -12,7 +12,6 @@ export default function Login() {
   const onLogin= async()=>{
     try{
       const response= await axios.post("/api/users/login",{username,password})
-      console.log(response)
       if(response.status==200){
         if(response.data.success)router.push("/")
         else alert(response.data.error)

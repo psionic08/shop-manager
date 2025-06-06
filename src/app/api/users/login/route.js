@@ -17,13 +17,15 @@ export async function POST(request) {
                 id: user._id,
                 username: user.username,
             }
-            const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: "1d"})
+            const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: "1s"})
             const response = NextResponse.json({
                 message: "Login successful",
                 success: true,
             })
             response.cookies.set("token", token, {
                 httpOnly: true,
+                secure: true,
+                maxAge: 3600*24
             })
             return response;
         }
@@ -31,5 +33,4 @@ export async function POST(request) {
     }catch(error){
         return NextResponse.json({error: error.message}, {status:500})
     }
-    return NextResponse.json({Hello:"World"})
 }
