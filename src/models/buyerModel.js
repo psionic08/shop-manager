@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const itemSchema = new mongoose.Schema({
+const buyerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please provide name"],
@@ -12,6 +12,6 @@ const itemSchema = new mongoose.Schema({
     }
 })
 
-const Item = mongoose.models.items || mongoose.model("items", itemSchema);
+const Buyer = mongoose.models.buyers || mongoose.model("buyers", buyerSchema);
 
-export default Item;
+export default Buyer;

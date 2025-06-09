@@ -15,9 +15,9 @@ const itemSchema = new mongoose.Schema({
         enum: ["Mtr","Bdl","Pcs"],
         required: [true, "Please provide unit"],
     },
-    userid: {
+    userId: {
         type: String,
-        required: [true, "Please provide userid"]
+        required: [true, "Please provide userId"]
     }
 })
 

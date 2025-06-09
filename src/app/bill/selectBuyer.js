@@ -8,7 +8,7 @@ export default function SelectBuyer({ buyersList, setBuyer }) {
             <label className="text-sm font-medium">Buyer:</label>
             <Dropdown
                 itemList={buyersList}
-                menuClassName="absolute mt-10 bg-white z-10 border rounded shadow max-h-48 overflow-y-auto w-full"
+                menuClassName="absolute bg-white z-10 border rounded shadow max-h-48 overflow-y-auto w-full"
                 containerClassName="relative w-full"
                 inputClassName="border border-gray-400 rounded-sm w-full px-2 py-1"
                 optionClassName="hover:bg-gray-100 px-2 py-1"

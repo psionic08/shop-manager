@@ -14,10 +14,10 @@ export async function POST(request) {
             const isValid= await bcryptjs.compare(password,user.password)
             if(!isValid) return NextResponse.json({success:false, error:"invalid password"},{status:200})
             const tokenData = {
-                id: user._id,
+                userId: user._id,
                 username: user.username,
             }
-            const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: "1s"})
+            const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {expiresIn: "1d"})
             const response = NextResponse.json({
                 message: "Login successful",
                 success: true,
@@ -25,7 +25,7 @@ export async function POST(request) {
             response.cookies.set("token", token, {
                 httpOnly: true,
                 secure: true,
-                maxAge: 3600*24
+                maxAge: 24*3600
             })
             return response;
         }

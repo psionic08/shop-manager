@@ -21,7 +21,7 @@ export default function AddItem({ itemList, setBillItems }) {
         <div className="text-sm font-medium">Item:</div>
         <Dropdown
           itemList={itemList}
-          menuClassName={"absolute mt-6 bg-gray-50 z-10 border rounded shadow max-h-48 overflow-y-auto w-full"}
+          menuClassName={"absolute bg-gray-50 z-10 border rounded shadow max-h-48 overflow-y-auto w-full"}
           containerClassName={"relative"}
           inputClassName={"border border-gray-400 rounded-sm w-64 px-2 py-1"}
           optionClassName={"hover:bg-gray-200 px-2 py-1"}

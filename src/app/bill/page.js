@@ -1,32 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AddItem from "./addItem"
 import SelectBuyer from "./selectBuyer"
-
-const buyersList = [
-    { name: "Alice" },
-    { name: "Bob" },
-    { name: "Charlie" },
-    { name: "Diana" },
-    { name: "Ethan" }
-]
-
-const itemList = [
-    { name: "PVC Insulated Wire 1.5mm", unit: "m", rate: 25 },
-    { name: "Coaxial Cable RG6", unit: "m", rate: 18 },
-    { name: "3 Core Electrical Cable", unit: "m", rate: 45 },
-    { name: "LAN Cat6 Cable", unit: "m", rate: 22 },
-    { name: "PVC Water Pipe 1 inch", unit: "m", rate: 35 },
-    { name: "LED Bulb 12W", unit: "pcs", rate: 90 },
-    { name: "A4 Paper Pack", unit: "box", rate: 250 },
-    { name: "Whiteboard Marker", unit: "pcs", rate: 30 },
-    { name: "Steel Table", unit: "pcs", rate: 4500 },
-    { name: "2 Core Cable Bundle", unit: "bundles", rate: 650 }
-]
+import axios from "axios"
+import { useRouter } from "next/navigation"
 
 export default function Bill() {
+    const router = useRouter()
     const [buyer, setBuyer] = useState(null)
+    const [itemList, setItemList] = useState(null)
+    const [buyersList, setBuyersList] = useState(null)
     const [billItems, setBillItems] = useState([])
 
     const handleDelete = (indexToDelete) => {
@@ -37,10 +21,46 @@ export default function Bill() {
         return acc + (curr.item.rate * curr.qty)
     }, 0)
 
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const res = await axios.get("/api/items/getitems", { withCredentials: true })
+                if (res.status === 401) {
+                    router.push("/")
+                } else {
+                    setItemList(res.data.items)
+                }
+            } catch (error) {
+                console.error("Error fetching items:", error)
+                alert("Could not fetch items.")
+            }
+        }
+
+        fetchItems()
+    }, [])
+
+    useEffect(() => {
+        const fetchBuyers = async () => {
+            try {
+                const res = await axios.get("/api/buyer/getbuyers", { withCredentials: true })
+                if (res.status === 401) {
+                    router.push("/")
+                } else {
+                    setBuyersList(res.data.buyers)
+                }
+            } catch (error) {
+                console.error("Error fetching buyers:", error)
+                alert("Could not fetch buyers.")
+            }
+        }
+
+        fetchBuyers()
+    }, [])
+
     return (
         <div className="pt-12 flex flex-col gap-8 items-center w-full px-4">
-            <SelectBuyer buyersList={buyersList} setBuyer={setBuyer} />
-            <AddItem itemList={itemList} setBillItems={setBillItems} />
+            {buyersList && <SelectBuyer buyersList={buyersList} setBuyer={setBuyer} />}
+            {itemList && <AddItem itemList={itemList} setBillItems={setBillItems} />}
 
             <div className="w-full max-w-2xl flex flex-col gap-4">
                 {billItems.map((element, idx) => {
@@ -70,7 +90,9 @@ export default function Bill() {
                     <div className="mt-1 font-medium bg-yellow-100 px-4 py-2 rounded shadow border">
                         Grand Total: ₹{billTotal}
                     </div>
-                    <button className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">Print Bill</button>
+                    <button className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
+                        Print Bill
+                    </button>
                 </>
             )}
         </div>
