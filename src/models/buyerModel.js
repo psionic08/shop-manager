@@ -6,9 +6,9 @@ const buyerSchema = new mongoose.Schema({
         required: [true, "Please provide name"],
         unique: true,
     },
-    userid: {
+    userId: {
         type: String,
-        required: [true, "Please provide userid"]
+        required: [true, "Please provide userId"]
     }
 })
 

@@ -21,8 +21,7 @@ export async function GET(request) {
     const userId = decoded.userId;
 
     // Fetch all buyers for this user
-    console.log(userId)
-    const buyers = await Buyer.find({ userid: userId });
+    const buyers = await Buyer.find({ userId: userId });
 
     return NextResponse.json({ buyers }, {status: 200});
   } catch (error) {

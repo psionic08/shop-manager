@@ -7,13 +7,18 @@ const itemSchema = new mongoose.Schema({
         unique: true,
     },
     rate: {
-       type: Number,
-       required: [true, "Please provide rate"],
+        type: Number,
+        required: [true, "Please provide rate"],
     },
     unit: {
         type: String,
-        enum: ["Mtr","Bdl","Pcs"],
+        enum: ["Mtr", "Bdl", "Pcs"],
         required: [true, "Please provide unit"],
+    },
+    quantity: {
+        type: Number,
+        required: [true, "Please provide quantity"],
+        default: 0
     },
     userId: {
         type: String,
