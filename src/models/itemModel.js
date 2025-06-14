@@ -4,7 +4,6 @@ const itemSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please provide name"],
-        unique: true,
     },
     rate: {
         type: Number,

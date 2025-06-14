@@ -4,7 +4,6 @@ const buyerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please provide name"],
-        unique: true,
     },
     userId: {
         type: String,
