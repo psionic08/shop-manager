@@ -23,6 +23,7 @@ export async function POST(request) {
             return NextResponse.json({ message: "Buyer created successfully" }, {response:res},{ status: 200 })
         }
     } catch (err) {
+        console.log(err)
         return NextResponse.json({ error: err.message }, { status: 500 })
     }
 }
