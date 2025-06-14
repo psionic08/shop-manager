@@ -67,7 +67,7 @@ export default function AddItem({ itemList, setBillItems }) {
               />
 
               <button
-                className="bg-blue-500 text-white rounded-sm px-3 py-1 hover:bg-blue-600 text-sm"
+                className="bg-blue-600 text-white rounded-sm px-3 py-1 hover:bg-blue-700 text-sm"
                 onClick={handleAddItem}
               >
                 Add Item

@@ -26,6 +26,22 @@ export default function Bill() {
         return acc + totalAfterDiscount
     }, 0)
 
+    const handleClearBill = async () => {
+        const updatedItems = billItems.map((billItem, idx) => {
+            billItem.item.quantity = billItem.item.quantity - billItem.qty
+            return billItem.item
+        })
+        const res = await axios('/api/items/updateitem', {
+            method: "post",
+            data: updatedItems,
+            withCredentials: true
+        })
+        if (res.status == 200) {
+            setBuyer(null)
+            setBillItems([])
+        }
+    }
+
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -105,21 +121,28 @@ export default function Bill() {
                     <div className="mt-1 font-medium bg-yellow-100 px-4 py-2 rounded shadow border">
                         Grand Total: ₹{billTotal.toFixed(2)}
                     </div>
-                    <div
-                        className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
-                        <PDFDownloadLink
-                            document={
-                                <InvoiceTemplate
-                                    buyer={buyer}
-                                    items={billItems}
-                                    invoiceDate={invoiceDate}
-                                    billTotal={billTotal}
-                                />
-                            }
-                            fileName={`Invoice_${invoiceDate}.pdf`}
+                    <div className="flex gap-4">
+                        <div className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
+                            <PDFDownloadLink
+                                document={
+                                    <InvoiceTemplate
+                                        buyer={buyer}
+                                        items={billItems}
+                                        invoiceDate={invoiceDate}
+                                        billTotal={billTotal}
+                                    />
+                                }
+                                fileName={`Invoice_${invoiceDate}.pdf`}
+                            >
+                                Download
+                            </PDFDownloadLink>
+                        </div>
+                        <button
+                            className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition"
+                            onClick={handleClearBill}
                         >
-                            Download
-                        </PDFDownloadLink>
+                            Clear Bill
+                        </button>
                     </div>
                 </>
             )

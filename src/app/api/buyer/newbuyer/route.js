@@ -15,12 +15,12 @@ export async function POST(request) {
     buyer.userId = userId
     try {
         if (buyer._id) {
-            await Buyer.updateOne({ _id: buyer._id }, { $set: buyer })
+            const res=await Buyer.updateOne({ _id: buyer._id }, { $set: buyer })
             return NextResponse.json({ message: "Buyer updated successfully" }, { status: 200 })
         }
         else {
-            await Buyer.create(buyer)
-            return NextResponse.json({ message: "Buyer created successfully" }, { status: 200 })
+            const res= await Buyer.create(buyer)
+            return NextResponse.json({ message: "Buyer created successfully" }, {response:res},{ status: 200 })
         }
     } catch (err) {
         return NextResponse.json({ error: err.message }, { status: 500 })
