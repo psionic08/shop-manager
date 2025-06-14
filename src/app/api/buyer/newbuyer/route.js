@@ -19,6 +19,11 @@ export async function POST(request) {
             return NextResponse.json({ message: "Buyer updated successfully" }, { status: 200 })
         }
         else {
+            const existing= Buyer.findOne({
+                name: buyer.name,
+                userId: buyer.userId,
+            })
+            if(existing) return NextResponse.json({message:"Buyer already exists"}, {status:200})
             const res= await Buyer.create(buyer)
             return NextResponse.json({ message: "Buyer created successfully" }, {response:res},{ status: 200 })
         }

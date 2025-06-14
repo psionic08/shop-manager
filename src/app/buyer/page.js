@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import Dropdown from "@/components/dropdown"
-import { useRouter } from "next/navigation"
 
 export default function Buyer() {
   const inputRef = useRef(null)
@@ -12,7 +11,6 @@ export default function Buyer() {
   const [name, setName] = useState("")
   const [query, setQuery] = useState("")
   const [mode, setMode] = useState("create") // "create" or "modify"
-  const router = useRouter()
 
   useEffect(() => {
     const fetchBuyers = async () => {
@@ -37,6 +35,13 @@ export default function Buyer() {
     }
   }, [selectedBuyer, mode])
 
+  const resetForm = () => {
+    setName("")
+    setQuery("")
+    setSelectedBuyer(null)
+    setMode("create")
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!name.trim()) {
@@ -45,16 +50,19 @@ export default function Buyer() {
     }
 
     try {
+      let res
       if (mode === "modify" && selectedBuyer) {
-        const res = await axios.post(`/api/buyer/newbuyer`, { _id: selectedBuyer._id, name: name }, { withCredentials: true })
-        alert(res.data.message)
+        res = await axios.post("/api/buyer/newbuyer", { _id: selectedBuyer._id, name }, { withCredentials: true })
       } else {
-        const res = await axios.post("/api/buyer/newbuyer", { name: name }, { withCredentials: true })
-        alert(res.data.message)
+        res = await axios.post("/api/buyer/newbuyer", { name }, { withCredentials: true })
       }
-      router.push("/")
+
+      if (res.status === 200) {
+        alert(res.data.message)
+        resetForm()
+      }
     } catch (error) {
-      alert("Error saving buyer")
+      alert(error?.response?.data?.error || "Error saving buyer")
     }
   }
 

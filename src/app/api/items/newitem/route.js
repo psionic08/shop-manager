@@ -13,7 +13,17 @@ export async function POST(request) {
         const decoded = jwt.verify(cookie, process.env.TOKEN_SECRET)
         const userId = decoded.userId
         item.userId = userId
-        const newDbEntry = Item.create(item)
+        console.log({
+            name: item.name,
+            userId: item.userId
+        })
+        const existing= await Item.findOne({
+            name: item.name,
+            userId: item.userId
+        })
+        console.log(existing)
+        if(existing)return NextResponse.json({message:"item already exists"}, {status:200})
+        const newDbEntry = await Item.create(item)
         return NextResponse.json({ message: "item created successfully" }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 })
