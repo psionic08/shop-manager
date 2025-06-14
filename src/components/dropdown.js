@@ -1,16 +1,15 @@
 import { useRef, useState } from "react"
 
-export default function Dropdown({ itemList, containerClassName, menuClassName, inputClassName, optionClassName, stateSetter, query, setQuery}) {
-    const inputRef = useRef(null)
+export default function Dropdown({ inputRef, itemList, containerClassName, menuClassName, inputClassName, optionClassName, stateSetter, query, setQuery }) {
     const [isOpen, setIsOpen] = useState(false)
 
-    function filter(itemList){
-        if(query=="")return itemList
-        return itemList.filter((item)=>{
+    function filter(itemList) {
+        if (query == "") return itemList
+        return itemList.filter((item) => {
             return item.name.toLowerCase().includes(query.toLowerCase())
         })
     }
-    function handleItemClick(item){
+    function handleItemClick(item) {
         setQuery(item.name)
         stateSetter(item)
         setIsOpen(false)
@@ -24,6 +23,7 @@ export default function Dropdown({ itemList, containerClassName, menuClassName, 
                 type="text"
                 value={query}
                 placeholder={isOpen ? "" : "Search..."}
+                onFocus={()=>{setIsOpen(true)}}
                 onChange={(e) => { setQuery(e.target.value) }}
                 onClick={() => setIsOpen((isOpen) => !isOpen)}
             />
@@ -31,7 +31,7 @@ export default function Dropdown({ itemList, containerClassName, menuClassName, 
                 <div className={menuClassName}>
                     {filter(itemList).map((item, idx) => {
                         return (
-                            <div key={idx} className={optionClassName} onClick={()=>handleItemClick(item)}>
+                            <div key={idx} className={optionClassName} onClick={() => handleItemClick(item)}>
                                 {item.name}
                             </div>
                         )

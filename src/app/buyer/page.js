@@ -1,17 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import Dropdown from "@/components/dropdown"
 import { useRouter } from "next/navigation"
 
 export default function Buyer() {
+  const inputRef = useRef(null)
   const [buyers, setBuyers] = useState([])
   const [selectedBuyer, setSelectedBuyer] = useState(null)
   const [name, setName] = useState("")
   const [query, setQuery] = useState("")
   const [mode, setMode] = useState("create") // "create" or "modify"
-  const router= useRouter()
+  const router = useRouter()
 
   useEffect(() => {
     const fetchBuyers = async () => {
@@ -88,6 +89,7 @@ export default function Buyer() {
         <div className="mb-4">
           <label className="block mb-2 font-medium">Select Buyer:</label>
           <Dropdown
+            inputRef={inputRef}
             itemList={buyers}
             containerClassName="relative"
             menuClassName="absolute bg-white border border-gray-300 rounded shadow max-h-48 overflow-y-auto w-full z-10"

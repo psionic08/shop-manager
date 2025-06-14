@@ -1,18 +1,19 @@
 import Dropdown from "@/components/dropdown"
 import axios from "axios"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvoiceDate }) {
+  const inputRef = useRef(null)
   const [query, setQuery] = useState("")
   const [mode, setMode] = useState("Existing")
-  const [visibility,setVisibility]= useState("visible")
-  const handleAddBuyer= async()=>{
+  const [visibility, setVisibility] = useState("visible")
+  const handleAddBuyer = async () => {
     const res = await axios.post("/api/buyer/newbuyer", { name: query }, { withCredentials: true })
-    if(res.status===200){
+    if (res.status === 200) {
       setBuyer(res.data.response)
       setVisibility("invisible")
     }
-    else{
+    else {
       alert("error creating buyer")
     }
   }
@@ -46,6 +47,7 @@ export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvo
         <div>
           {mode === "Existing" ? (
             <Dropdown
+              inputRef={inputRef}
               itemList={buyersList}
               menuClassName="absolute bg-white z-10 border rounded shadow max-h-48 overflow-y-auto w-full"
               containerClassName="relative w-full"
@@ -65,7 +67,7 @@ export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvo
               />
               <button className={`ml-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm w-30 ${visibility}`}
                 onClick={handleAddBuyer}
-                disabled={query===""}
+                disabled={query === ""}
               >
                 Add Buyer
               </button>

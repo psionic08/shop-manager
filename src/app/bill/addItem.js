@@ -1,7 +1,8 @@
 import Dropdown from "@/components/dropdown"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 export default function AddItem({ itemList, setBillItems }) {
+  const inputRef = useRef(null)
   const [selectedItem, setSelectedItem] = useState(null)
   const [quantity, setQuantity] = useState(0)
   const [discount, setDiscount] = useState(0)
@@ -21,6 +22,7 @@ export default function AddItem({ itemList, setBillItems }) {
       setQuantity(0)
       setDiscount(0)
       setQuery("")
+      inputRef.current?.focus()
     }
   }
   return (
@@ -29,6 +31,7 @@ export default function AddItem({ itemList, setBillItems }) {
         <div className="flex justify-center items-center gap-2">
           <div className="text-sm font-medium">Item:</div>
           <Dropdown
+            inputRef={inputRef}
             itemList={itemList}
             menuClassName="absolute bg-gray-50 z-10 border rounded shadow max-h-48 overflow-y-auto w-full"
             containerClassName="relative"

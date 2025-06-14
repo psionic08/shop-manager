@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import Dropdown from "@/components/dropdown"
 import { useRouter } from "next/navigation"
 
 export default function Item() {
+    const inputRef = useRef(null)
     const router = useRouter()
     const [items, setItems] = useState([])
     const [selectedItem, setSelectedItem] = useState(null)
@@ -112,6 +113,7 @@ export default function Item() {
                 <div className="mb-4">
                     <label className="block mb-2 font-medium">Select Item:</label>
                     <Dropdown
+                        inputRef={inputRef}
                         itemList={items}
                         containerClassName="relative"
                         menuClassName="absolute bg-white border border-gray-300 rounded shadow max-h-48 overflow-y-auto w-full z-10"
