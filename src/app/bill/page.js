@@ -5,6 +5,8 @@ import AddItem from "./addItem"
 import SelectBuyer from "./selectBuyer"
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer"
+import InvoiceTemplate from "@/components/invoiceTemplate"
 
 export default function Bill() {
     const router = useRouter()
@@ -51,7 +53,6 @@ export default function Bill() {
 
         fetchBuyers()
     }, [])
-
     return (
         <div className="pt-12 flex flex-col gap-8 items-center w-full px-4">
             {buyersList && (
@@ -104,11 +105,25 @@ export default function Bill() {
                     <div className="mt-1 font-medium bg-yellow-100 px-4 py-2 rounded shadow border">
                         Grand Total: ₹{billTotal.toFixed(2)}
                     </div>
-                    <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
-                        Print Bill
-                    </button>
+                    <div
+                        className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
+                        <PDFDownloadLink
+                            document={
+                                <InvoiceTemplate
+                                    buyer={buyer}
+                                    items={billItems}
+                                    invoiceDate={invoiceDate}
+                                    billTotal={billTotal}
+                                />
+                            }
+                            fileName={`Invoice_${invoiceDate}.pdf`}
+                        >
+                            Download
+                        </PDFDownloadLink>
+                    </div>
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
