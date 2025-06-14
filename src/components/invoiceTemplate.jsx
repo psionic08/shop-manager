@@ -57,9 +57,6 @@ const formatDate = (dateStr) => {
   const year = date.getFullYear()
   return `${day}-${month}-${year}`
 }
-function breakLongWords(str, chunkSize = 10) {
-  return str.replace(new RegExp(`(.{${chunkSize}})`, 'g'), '$1\u200B')
-}
 
 export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }) {
   return (
@@ -90,7 +87,7 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
           const total = el.item.rate * el.qty * (1 - (el.discount || 0) / 100)
           return (
             <View style={styles.tableRow} key={idx}>
-              <Text style={styles.cell}>{breakLongWords(el.item.name)}</Text>
+              <Text style={styles.cell}>{el.item.name}</Text>
               <Text style={styles.cell}>{el.qty}</Text>
               <Text style={styles.cell}>₹{el.item.rate}</Text>
               <Text style={styles.cell}>{el.discount || 0}%</Text>
