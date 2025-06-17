@@ -23,6 +23,7 @@ export default function AddItem({ itemList, setBillItems }) {
       setDiscount(0)
       setQuery("")
       inputRef.current?.focus()
+      
     }
   }
   return (
@@ -49,7 +50,9 @@ export default function AddItem({ itemList, setBillItems }) {
               <div className="text-sm">Rate:</div>
               <input
                 className="border border-gray-400 rounded-sm w-16 px-2 py-1"
-                value={selectedItem.rate}
+                type="number"
+                step="any"
+                value={selectedItem.rate.toString()}
                 onChange={(e) => {
                   setSelectedItem({ ...selectedItem, rate: Number(e.target.value) })
                 }}
@@ -58,14 +61,18 @@ export default function AddItem({ itemList, setBillItems }) {
               <div className="text-sm">{`Qty (${selectedItem.unit}):`}</div>
               <input
                 className="border border-gray-400 rounded-sm w-16 px-2 py-1"
-                value={quantity}
+                type="number"
+                step="any"
+                value={quantity.toString()}
                 onChange={(e) => setQuantity(Number(e.target.value))}
               />
 
               <div className="text-sm">Discount %:</div>
               <input
                 className="border border-gray-400 rounded-sm w-16 px-2 py-1"
-                value={discount}
+                type="number"
+                step="any"
+                value={discount.toString()}
                 onChange={(e) => setDiscount(Number(e.target.value))}
               />
 

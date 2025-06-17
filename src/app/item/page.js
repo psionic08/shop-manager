@@ -179,6 +179,7 @@ export default function Item() {
               <label className="block mb-1 font-medium">Quantity Change (+)</label>
               <input
                 type="number"
+                step="any"
                 value={stockChange}
                 onChange={(e) => setStockChange(e.target.value)}
                 className="w-full border border-gray-300 rounded px-3 py-2"
