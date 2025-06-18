@@ -160,7 +160,7 @@ export default function Item() {
                 className="w-full border border-gray-300 rounded px-3 py-2"
               >
                 <option value="Mtr">Mtr</option>
-                <option value="Bdl">Bdl</option>
+                <option value="Coil">Coil</option>
                 <option value="Pcs">Pcs</option>
               </select>
             </div>

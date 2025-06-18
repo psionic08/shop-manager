@@ -11,7 +11,7 @@ const itemSchema = new mongoose.Schema({
     },
     unit: {
         type: String,
-        enum: ["Mtr", "Bdl", "Pcs"],
+        enum: ["Mtr", "Coil", "Pcs"],
         required: [true, "Please provide unit"],
     },
     quantity: {
