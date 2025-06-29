@@ -88,8 +88,8 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
           return (
             <View style={styles.tableRow} key={idx}>
               <Text style={styles.cell}>{el.item.name}</Text>
-              <Text style={styles.cell}>₹{el.item.rate}</Text>
               <Text style={styles.cell}>{el.qty}</Text>
+              <Text style={styles.cell}>₹{el.item.rate}</Text>
               <Text style={styles.cell}>{el.discount || 0}%</Text>
               <Text style={styles.cell}>₹{total.toFixed(2)}</Text>
             </View>

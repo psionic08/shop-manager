@@ -47,6 +47,15 @@ export default function AddItem({ itemList, setBillItems }) {
         {selectedItem && (
           <>
             <div className="flex items-center gap-3">
+              <div className="text-sm">{`Qty (${selectedItem.unit}):`}</div>
+              <input
+                className="border border-gray-400 rounded-sm w-16 px-2 py-1"
+                type="number"
+                step="any"
+                value={quantity.toString()}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+              />
+              
               <div className="text-sm">Rate:</div>
               <input
                 className="border border-gray-400 rounded-sm w-16 px-2 py-1"
@@ -56,15 +65,6 @@ export default function AddItem({ itemList, setBillItems }) {
                 onChange={(e) => {
                   setSelectedItem({ ...selectedItem, rate: Number(e.target.value) })
                 }}
-              />
-
-              <div className="text-sm">{`Qty (${selectedItem.unit}):`}</div>
-              <input
-                className="border border-gray-400 rounded-sm w-16 px-2 py-1"
-                type="number"
-                step="any"
-                value={quantity.toString()}
-                onChange={(e) => setQuantity(Number(e.target.value))}
               />
 
               <div className="text-sm">Discount %:</div>
