@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   tableRow: {
+    display: 'flex',
     flexDirection: 'row',
     borderBottom: '0.5px solid #ccc',
     paddingVertical: 3
@@ -31,22 +32,21 @@ const styles = StyleSheet.create({
   cell: {
     flex: 1,
     paddingRight: 4,
+    marginRight: 10,
   },
   totalAmountSection: {
     marginTop: 12,
     marginRight: 40,
-    alignItems: 'flex-end'
+    textAlign:'right'
   },
   grandTotalLabel: {
     fontSize: 12,
     fontWeight: 'bold',
-    textAlign: 'right'
   },
   grandTotalValue: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#222',
-    textAlign: 'right',
     marginTop: 2
   }
 });
@@ -59,10 +59,11 @@ const formatDate = (dateStr) => {
 }
 
 export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }) {
+  console.log(billTotal)
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        
+
         {/* Buyer as Header */}
         <Text style={styles.buyerHeader}>
           {buyer?.name?.toUpperCase() || 'BUYER NAME'}
@@ -74,8 +75,8 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
         </View>
 
         {/* Table Header */}
-        <View style={styles.tableHeader}>
-          <Text style={styles.cell}>Description</Text>
+        <View style={[styles.tableRow, { paddingVertical: 0, borderBottom: '1px solid #000', paddingBottom: 4, marginTop: 8 }]}>
+          <Text style={[styles.cell,{minWidth:100}]}>Description</Text>
           <Text style={styles.cell}>Qty</Text>
           <Text style={styles.cell}>Rate</Text>
           <Text style={styles.cell}>Disc%</Text>
@@ -87,9 +88,9 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
           const total = el.item.rate * el.qty * (1 - (el.discount || 0) / 100)
           return (
             <View style={styles.tableRow} key={idx}>
-              <Text style={styles.cell}>{el.item.name}</Text>
+              <Text style={[styles.cell,{minWidth:100}]}>{el.item.name}</Text>
               <Text style={styles.cell}>{el.qty}</Text>
-              <Text style={styles.cell}>₹{el.item.rate}</Text>
+              <Text style={styles.cell} debug={true}>₹{el.item.rate}</Text>
               <Text style={styles.cell}>{el.discount || 0}%</Text>
               <Text style={styles.cell}>₹{total.toFixed(2)}</Text>
             </View>

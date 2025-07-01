@@ -2,13 +2,12 @@ import Dropdown from "@/components/dropdown"
 import axios from "axios"
 import { useRef, useState } from "react"
 
-export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvoiceDate }) {
+export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvoiceDate, buyerQuery, setBuyerQuery }) {
   const inputRef = useRef(null)
-  const [query, setQuery] = useState("")
   const [mode, setMode] = useState("Existing")
   const [visibility, setVisibility] = useState("visible")
   const handleAddBuyer = async () => {
-    const res = await axios.post("/api/buyer/newbuyer", { name: query }, { withCredentials: true })
+    const res = await axios.post("/api/buyer/newbuyer", { name: buyerQuery }, { withCredentials: true })
     if (res.status === 200) {
       setBuyer(res.data.response)
       setVisibility("invisible")
@@ -54,20 +53,20 @@ export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvo
               inputClassName="border border-gray-400 rounded-sm w-full px-2 py-1"
               optionClassName="hover:bg-gray-100 px-2 py-1"
               stateSetter={setBuyer}
-              query={query}
-              setQuery={setQuery}
+              query={buyerQuery}
+              setQuery={setBuyerQuery}
             />
           ) : (
             <div className="flex">
               <input
                 type="text"
                 className="border border-gray-400 rounded-sm w-full px-2 py-1"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                value={buyerQuery}
+                onChange={(e) => setBuyerQuery(e.target.value)}
               />
               <button className={`ml-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm w-30 ${visibility}`}
                 onClick={handleAddBuyer}
-                disabled={query === ""}
+                disabled={buyerQuery === ""}
               >
                 Add Buyer
               </button>

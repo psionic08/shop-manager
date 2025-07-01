@@ -15,6 +15,7 @@ export default function Bill() {
     const [buyersList, setBuyersList] = useState(null)
     const [billItems, setBillItems] = useState([])
     const [invoiceDate, setInvoiceDate] = useState(() => new Date().toISOString().split("T")[0])
+    const [buyerQuery, setBuyerQuery] = useState("")
 
     const handleDelete = (indexToDelete) => {
         setBillItems(prev => prev.filter((_, idx) => idx !== indexToDelete))
@@ -38,6 +39,7 @@ export default function Bill() {
         })
         if (res.status == 200) {
             setBuyer(null)
+            setBuyerQuery("")
             setBillItems([])
         }
     }
@@ -77,6 +79,8 @@ export default function Bill() {
                     setBuyer={setBuyer}
                     invoiceDate={invoiceDate}
                     setInvoiceDate={setInvoiceDate}
+                    buyerQuery={buyerQuery}
+                    setBuyerQuery={setBuyerQuery}
                 />
             )}
 
