@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   totalAmountSection: {
     marginTop: 12,
-    marginRight: 40,
+    marginRight: 10,
     textAlign:'right'
   },
   grandTotalLabel: {
@@ -62,7 +62,7 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
   console.log(billTotal)
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      <Page size="A5" style={styles.page}>
 
         {/* Buyer as Header */}
         <Text style={styles.buyerHeader}>
@@ -90,7 +90,7 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
             <View style={styles.tableRow} key={idx}>
               <Text style={[styles.cell,{minWidth:100}]}>{el.item.name}</Text>
               <Text style={styles.cell}>{el.qty}</Text>
-              <Text style={styles.cell} debug={true}>₹{el.item.rate}</Text>
+              <Text style={styles.cell}>₹{el.item.rate}</Text>
               <Text style={styles.cell}>{el.discount || 0}%</Text>
               <Text style={styles.cell}>₹{total.toFixed(2)}</Text>
             </View>
