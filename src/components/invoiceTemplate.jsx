@@ -90,9 +90,9 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
             <View style={styles.tableRow} key={idx}>
               <Text style={[styles.cell,{minWidth:100}]}>{el.item.name}</Text>
               <Text style={styles.cell}>{el.qty}</Text>
-              <Text style={styles.cell}>₹{el.item.rate}</Text>
+              <Text style={styles.cell}>{el.item.rate}</Text>
               <Text style={styles.cell}>{el.discount || 0}%</Text>
-              <Text style={styles.cell}>₹{total.toFixed(2)}</Text>
+              <Text style={styles.cell}>{total.toFixed(2)}</Text>
             </View>
           )
         })}
@@ -100,7 +100,7 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
         {/* Total Section */}
         <View style={styles.totalAmountSection}>
           <Text style={styles.grandTotalLabel}>Grand Total</Text>
-          <Text style={styles.grandTotalValue}>₹{billTotal.toFixed(2)}</Text>
+          <Text style={styles.grandTotalValue}>{billTotal.toFixed(2)}</Text>
         </View>
       </Page>
     </Document>
