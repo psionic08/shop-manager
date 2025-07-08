@@ -58,7 +58,7 @@ const formatDate = (dateStr) => {
   return `${day}-${month}-${year}`
 }
 
-export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }) {
+export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal, roundoff }) {
   console.log(billTotal)
   return (
     <Document>
@@ -96,11 +96,18 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal }
             </View>
           )
         })}
+        <View style={styles.tableRow}>
+              <Text style={[styles.cell,{minWidth:100}]}>Round Off</Text>
+              <Text style={styles.cell}></Text>
+              <Text style={styles.cell}></Text>
+              <Text style={styles.cell}></Text>
+              <Text style={styles.cell}>{roundoff}</Text>
+        </View>
 
         {/* Total Section */}
         <View style={styles.totalAmountSection}>
           <Text style={styles.grandTotalLabel}>Grand Total</Text>
-          <Text style={styles.grandTotalValue}>{billTotal.toFixed(2)}</Text>
+          <Text style={styles.grandTotalValue}>{billTotal}</Text>
         </View>
       </Page>
     </Document>

@@ -16,7 +16,7 @@ export default function Bill() {
     const [billItems, setBillItems] = useState([])
     const [invoiceDate, setInvoiceDate] = useState(() => new Date().toISOString().split("T")[0])
     const [buyerQuery, setBuyerQuery] = useState("")
-
+    const [roundoff, setRoundoff] = useState(0)
     const handleDelete = (indexToDelete) => {
         setBillItems(prev => prev.filter((_, idx) => idx !== indexToDelete))
     }
@@ -26,7 +26,7 @@ export default function Bill() {
         const totalAfterDiscount = curr.item.rate * curr.qty * (1 - discount / 100)
         return acc + totalAfterDiscount
     }, 0)
-
+    const newBillTotal = parseFloat(billTotal.toFixed(2)) + roundoff
     const handleClearBill = async () => {
         const updatedItems = billItems.map((billItem, idx) => {
             billItem.item.quantity = billItem.item.quantity - billItem.qty
@@ -122,8 +122,27 @@ export default function Bill() {
 
             {billItems.length > 0 && (
                 <>
+                    <div className="flex gap-4 items-center">
+                        <div>Round off:</div>
+                        <input
+                            className="border border-gray-400 rounded-sm w-16 px-2 py-1"
+                            type="number"
+                            step="any"
+                            value={roundoff}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                // Allow empty string, minus sign, or valid number
+                                if (val === '' || val === '-' || val === '.' || val === '-.') {
+                                    setRoundoff(val);
+                                } else {
+                                    const parsed = parseFloat(val);
+                                    if (!isNaN(parsed)) setRoundoff(parsed);
+                                }
+                            }}
+                        />
+                    </div>
                     <div className="mt-1 font-medium bg-yellow-100 px-4 py-2 rounded shadow border">
-                        Grand Total: ₹{billTotal.toFixed(2)}
+                        Grand Total: ₹{isNaN(newBillTotal)?billTotal.toFixed(2):newBillTotal}
                     </div>
                     <div className="flex gap-4">
                         <div className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
@@ -133,7 +152,8 @@ export default function Bill() {
                                         buyer={buyer}
                                         items={billItems}
                                         invoiceDate={invoiceDate}
-                                        billTotal={billTotal}
+                                        billTotal={newBillTotal}
+                                        roundoff={roundoff}
                                     />
                                 }
                                 fileName={`Invoice_${invoiceDate}.pdf`}
