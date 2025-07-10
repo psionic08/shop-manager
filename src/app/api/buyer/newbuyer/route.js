@@ -25,7 +25,7 @@ export async function POST(request) {
             })
             if(existing) return NextResponse.json({message:"Buyer already exists"}, {status:200})
             const res= await Buyer.create(buyer)
-            return NextResponse.json({ message: "Buyer created successfully" }, {response:res},{ status: 200 })
+            return NextResponse.json({ message: "Buyer created successfully", response: res},{ status: 200 })
         }
     } catch (err) {
         console.log(err)
