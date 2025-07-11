@@ -22,7 +22,6 @@ export async function GET(request) {
 
     // Fetch all buyers for this user
     const buyers = await Buyer.find({ userId: userId });
-    console.log(buyers)
     return NextResponse.json({ buyers },{status: 200});
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

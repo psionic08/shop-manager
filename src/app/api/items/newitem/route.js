@@ -19,7 +19,7 @@ export async function POST(request) {
         })
         if(existing)return NextResponse.json({message:"item already exists"}, {status:200})
         const newDbEntry = await Item.create(item)
-        return NextResponse.json({ message: "item created successfully" }, { status: 200 })
+        return NextResponse.json({ message: "item created successfully", item: newDbEntry }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 })
     }
