@@ -20,7 +20,7 @@ export default function AddItem({ itemList, setBillItems }) {
     }
     const res = await axios("/api/items/newitem", {
       method: "post",
-      data: { name: newName, rate: newRate, unit: newUnit, quantity: -1*quantity },
+      data: { name: newName, rate: newRate, unit: newUnit, quantity: 0 },
       withCredentials: true
     })
     if(res.status===200){
