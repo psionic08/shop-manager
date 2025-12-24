@@ -17,30 +17,30 @@ export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvo
     }
   }
   return (
-    <div className="w-full max-w-2xl flex justify-center gap-4">
+    <div className="w-full max-w-2xl flex flex-col sm:flex-row justify-center gap-4">
       {/* Buyer dropdown */}
       <div className="flex flex-col w-full">
-        <div className="flex gap-3 items-center">
-          <div >Buyer:</div>
-          <div className="flex">
-            <div>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center mb-2">
+          <div className="font-medium">Buyer:</div>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-1 cursor-pointer">
               <input
                 type="radio"
                 value={mode}
                 onChange={() => setMode("Existing")}
                 checked={mode === "Existing"}
               />
-              Existing
-            </div>
-            <div className="ml-3">
+              <span className="text-sm">Existing</span>
+            </label>
+            <label className="flex items-center gap-1 cursor-pointer">
               <input
                 type="radio"
                 value={mode}
                 onChange={() => setMode("New")}
                 checked={mode === "New"}
               />
-              New
-            </div>
+              <span className="text-sm">New</span>
+            </label>
           </div>
         </div>
         <div>
@@ -50,21 +50,22 @@ export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvo
               itemList={buyersList}
               menuClassName="absolute bg-white z-10 border rounded shadow max-h-48 overflow-y-auto w-full"
               containerClassName="relative w-full"
-              inputClassName="border border-gray-400 rounded-sm w-full px-2 py-1"
-              optionClassName="hover:bg-gray-100 px-2 py-1"
+              inputClassName="border border-gray-400 rounded-sm w-full px-3 py-2 text-sm sm:text-base"
+              optionClassName="hover:bg-gray-100 px-2 py-1 text-sm"
               stateSetter={setBuyer}
               query={buyerQuery}
               setQuery={setBuyerQuery}
             />
           ) : (
-            <div className="flex">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
-                className="border border-gray-400 rounded-sm w-full px-2 py-1"
+                className="border border-gray-400 rounded-sm w-full px-3 py-2 text-sm sm:text-base"
+                placeholder="Enter buyer name"
                 value={buyerQuery}
                 onChange={(e) => setBuyerQuery(e.target.value)}
               />
-              <button className={`ml-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm w-30 ${visibility}`}
+              <button className={`px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm whitespace-nowrap ${visibility}`}
                 onClick={handleAddBuyer}
                 disabled={buyerQuery === ""}
               >
@@ -74,13 +75,13 @@ export default function SelectBuyer({ buyersList, setBuyer, invoiceDate, setInvo
           )}
         </div>
       </div>
-      <div className="flex flex-col justify-between">
-        <div>Invoice Date:</div>
+      <div className="flex flex-col justify-between min-w-full sm:min-w-0 sm:w-auto">
+        <div className="font-medium mb-2">Invoice Date:</div>
         <input
           type="date"
           value={invoiceDate}
           onChange={(e) => setInvoiceDate(e.target.value)}
-          className="border border-gray-400 px-3 py-1 rounded w-full"
+          className="border border-gray-400 px-3 py-2 rounded w-full text-sm sm:text-base"
         />
       </div>
     </div>

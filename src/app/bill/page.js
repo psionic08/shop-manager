@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import AddItem from "./addItem"
 import SelectBuyer from "./selectBuyer"
 import axios from "axios"
@@ -27,6 +27,21 @@ export default function Bill() {
         return acc + totalAfterDiscount
     }, 0)
     const newBillTotal = parseFloat(billTotal.toFixed(2)) + roundoff
+    
+    // Memoize the PDF document to prevent re-creation on every render
+    const pdfDocument = useMemo(() => {
+        if (!buyer || billItems.length === 0) return null
+        return (
+            <InvoiceTemplate
+                buyer={buyer}
+                items={billItems}
+                invoiceDate={invoiceDate}
+                billTotal={isNaN(newBillTotal) ? billTotal : newBillTotal}
+                roundoff={roundoff}
+            />
+        )
+    }, [buyer, billItems, invoiceDate, billTotal, newBillTotal, roundoff])
+    
     const handleClearBill = async () => {
         const updatedItems = billItems.map((billItem, idx) => {
             billItem.item.quantity = billItem.item.quantity - billItem.qty
@@ -72,7 +87,7 @@ export default function Bill() {
         fetchBuyers()
     }, [])
     return (
-        <div className="pt-12 flex flex-col gap-8 items-center w-full px-4">
+        <div className="pt-4 sm:pt-8 md:pt-12 flex flex-col gap-4 sm:gap-6 md:gap-8 items-center w-full px-2 sm:px-4">
             {buyersList && (
                 <SelectBuyer
                     buyersList={buyersList}
@@ -95,15 +110,15 @@ export default function Bill() {
                     return (
                         <div
                             key={idx}
-                            className="flex justify-between items-center border px-4 py-2 rounded shadow-sm bg-white text-sm"
+                            className="flex flex-col sm:flex-row sm:justify-between sm:items-center border px-3 sm:px-4 py-3 sm:py-2 rounded shadow-sm bg-white text-sm gap-2 sm:gap-0"
                         >
-                            <div className="flex flex-wrap gap-4 items-center">
-                                <span className="font-medium">{item.name}</span>
-                                <span className="text-gray-600">
+                            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 sm:items-center">
+                                <span className="font-medium text-base sm:text-sm">{item.name}</span>
+                                <span className="text-gray-600 text-sm">
                                     {qty} {item.unit} × ₹{item.rate}
                                 </span>
                                 {discount > 0 && (
-                                    <span className="text-red-500">–{discount}%</span>
+                                    <span className="text-red-500 text-sm">–{discount}%</span>
                                 )}
                                 <span className="text-green-700 font-semibold">
                                     ₹{totalAfterDiscount.toFixed(2)}
@@ -111,7 +126,7 @@ export default function Bill() {
                             </div>
                             <button
                                 onClick={() => handleDelete(idx)}
-                                className="ml-4 px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+                                className="sm:ml-4 px-3 py-2 sm:px-2 sm:py-1 bg-red-500 text-white text-sm sm:text-xs rounded hover:bg-red-600 self-start sm:self-auto"
                             >
                                 Delete
                             </button>
@@ -122,10 +137,10 @@ export default function Bill() {
 
             {billItems.length > 0 && (
                 <>
-                    <div className="flex gap-4 items-center">
+                    <div className="flex gap-3 sm:gap-4 items-center text-sm sm:text-base">
                         <div>Round off:</div>
                         <input
-                            className="border border-gray-400 rounded-sm w-16 px-2 py-1"
+                            className="border border-gray-400 rounded-sm w-20 sm:w-16 px-2 py-1 text-sm"
                             type="number"
                             step="any"
                             value={roundoff}
@@ -141,28 +156,22 @@ export default function Bill() {
                             }}
                         />
                     </div>
-                    <div className="mt-1 font-medium bg-yellow-100 px-4 py-2 rounded shadow border">
+                    <div className="w-full max-w-2xl mt-1 font-medium bg-yellow-100 px-4 py-3 sm:py-2 rounded shadow border text-center sm:text-left text-base sm:text-sm">
                         Grand Total: ₹{isNaN(newBillTotal)?billTotal.toFixed(2):newBillTotal}
                     </div>
-                    <div className="flex gap-4">
-                        <div className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition">
-                            <PDFDownloadLink
-                                document={
-                                    <InvoiceTemplate
-                                        buyer={buyer}
-                                        items={billItems}
-                                        invoiceDate={invoiceDate}
-                                        billTotal={newBillTotal}
-                                        roundoff={roundoff}
-                                    />
-                                }
-                                fileName={`Invoice_${invoiceDate}.pdf`}
-                            >
-                                Download
-                            </PDFDownloadLink>
-                        </div>
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-2xl sm:w-auto">
+                        {pdfDocument && (
+                            <div className="px-4 py-3 sm:py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition text-center">
+                                <PDFDownloadLink
+                                    document={pdfDocument}
+                                    fileName={`Invoice_${invoiceDate}.pdf`}
+                                >
+                                    Download
+                                </PDFDownloadLink>
+                            </div>
+                        )}
                         <button
-                            className="px-4 py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition"
+                            className="px-4 py-3 sm:py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition"
                             onClick={handleClearBill}
                         >
                             Clear Bill

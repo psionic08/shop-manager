@@ -59,7 +59,6 @@ const formatDate = (dateStr) => {
 }
 
 export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal, roundoff }) {
-  console.log(billTotal)
   return (
     <Document>
       <Page size="A5" style={styles.page}>
