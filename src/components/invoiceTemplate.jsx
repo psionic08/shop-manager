@@ -6,16 +6,17 @@ const styles = StyleSheet.create({
   page: {
     padding: 30,
     fontSize: 10,
-    fontFamily: 'Helvetica'
+    fontFamily: 'Helvetica-Bold'
   },
   buyerHeader: {
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   section: {
     marginBottom: 10,
     textAlign: 'center',
+    fontFamily: 'Helvetica-Bold',
   },
   tableHeader: {
     flexDirection: 'row',
@@ -29,10 +30,16 @@ const styles = StyleSheet.create({
     borderBottom: '0.5px solid #ccc',
     paddingVertical: 3
   },
+  spaceRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: 6
+  },
   cell: {
     flex: 1,
     paddingRight: 4,
     marginRight: 10,
+    fontFamily: 'Helvetica-Bold',
   },
   totalAmountSection: {
     marginTop: 12,
@@ -41,11 +48,11 @@ const styles = StyleSheet.create({
   },
   grandTotalLabel: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   grandTotalValue: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
     color: '#222',
     marginTop: 2
   }
@@ -84,6 +91,9 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal, 
 
         {/* Table Rows */}
         {items.map((el, idx) => {
+          if (el.type === "space") {
+            return <View style={styles.spaceRow} key={idx} />
+          }
           const total = el.item.rate * el.qty * (1 - (el.discount || 0) / 100)
           return (
             <View style={styles.tableRow} key={idx}>

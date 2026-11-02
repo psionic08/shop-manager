@@ -22,6 +22,7 @@ export default function Bill() {
     }
 
     const billTotal = billItems.reduce((acc, curr) => {
+        if (curr.type === "space") return acc
         const discount = curr.discount || 0
         const totalAfterDiscount = curr.item.rate * curr.qty * (1 - discount / 100)
         return acc + totalAfterDiscount
@@ -42,11 +43,17 @@ export default function Bill() {
         )
     }, [buyer, billItems, invoiceDate, billTotal, newBillTotal, roundoff])
     
+    const handleAddSpace = () => {
+        setBillItems(prev => [...prev, { type: "space" }])
+    }
+
     const handleClearBill = async () => {
-        const updatedItems = billItems.map((billItem, idx) => {
-            billItem.item.quantity = billItem.item.quantity - billItem.qty
-            return billItem.item
-        })
+        const updatedItems = billItems
+            .filter(billItem => billItem.type !== "space")
+            .map((billItem) => {
+                billItem.item.quantity = billItem.item.quantity - billItem.qty
+                return billItem.item
+            })
         const res = await axios('/api/items/updateitem', {
             method: "post",
             data: updatedItems,
@@ -101,8 +108,32 @@ export default function Bill() {
 
             {itemList && <AddItem itemList={itemList} setBillItems={setBillItems} />}
 
+            <button
+                className="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded shadow hover:bg-gray-300 transition"
+                onClick={handleAddSpace}
+            >
+                + Add Space
+            </button>
+
             <div className="w-full max-w-2xl flex flex-col gap-2">
                 {billItems.map((element, idx) => {
+                    if (element.type === "space") {
+                        return (
+                            <div
+                                key={idx}
+                                className="flex justify-between items-center border border-dashed px-3 sm:px-4 py-2 rounded bg-gray-50 text-sm text-gray-400"
+                            >
+                                <span>— Space —</span>
+                                <button
+                                    onClick={() => handleDelete(idx)}
+                                    className="px-3 py-1 sm:px-2 sm:py-1 bg-red-400 text-white text-xs rounded hover:bg-red-500"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        )
+                    }
+
                     const { item, qty, discount = 0 } = element
                     const originalTotal = item.rate * qty
                     const totalAfterDiscount = originalTotal * (1 - discount / 100)
