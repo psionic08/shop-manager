@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
   spaceRow: {
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: 6
+    paddingVertical: 8,
+    borderBottom: 'none',
   },
   cell: {
     flex: 1,
@@ -92,7 +93,15 @@ export default function InvoiceTemplate({ buyer, items, invoiceDate, billTotal, 
         {/* Table Rows */}
         {items.map((el, idx) => {
           if (el.type === "space") {
-            return <View style={styles.spaceRow} key={idx} />
+            return (
+              <View style={styles.spaceRow} key={idx}>
+                <Text style={[styles.cell, {minWidth: 100}]}>{' '}</Text>
+                <Text style={styles.cell}>{' '}</Text>
+                <Text style={styles.cell}>{' '}</Text>
+                <Text style={styles.cell}>{' '}</Text>
+                <Text style={styles.cell}>{' '}</Text>
+              </View>
+            )
           }
           const total = el.item.rate * el.qty * (1 - (el.discount || 0) / 100)
           return (

@@ -42,6 +42,10 @@ export default function Bill() {
             />
         )
     }, [buyer, billItems, invoiceDate, billTotal, newBillTotal, roundoff])
+
+    // Force PDFDownloadLink to fully remount (instead of incremental update)
+    // when the document changes, to avoid react-pdf reconciler update bugs
+    const pdfKey = useMemo(() => Date.now(), [buyer, billItems, invoiceDate, billTotal, newBillTotal, roundoff])
     
     const handleAddSpace = () => {
         setBillItems(prev => [...prev, { type: "space" }])
@@ -194,6 +198,7 @@ export default function Bill() {
                         {pdfDocument && (
                             <div className="px-4 py-3 sm:py-2 bg-blue-600 text-white text-sm rounded shadow hover:bg-blue-700 transition text-center">
                                 <PDFDownloadLink
+                                    key={pdfKey}
                                     document={pdfDocument}
                                     fileName={`Invoice_${invoiceDate}.pdf`}
                                 >
